@@ -1,17 +1,28 @@
-import {Sequelize, Model, DataTypes, BuildOptions} from "sequelize";
-import {database} from "../config/database";
+import {Model, DataTypes} from 'sequelize';
+import {database} from '../config/database';
+
+const PROTECTED_ATTRIBUTES = ['user_password', 'user_pin'];
 
 export class User extends Model {
-    public user_id!: number;
-    public user_username!: string;
-    public user_password!: string;
-    public user_fullName: string;
-    public user_pin: number;
-    public user_token: string;
-    public user_enabled!: number;
-    public user_team!: number;
-    public user_teamRole!: number;
-    public user_isAdmin!: number;
+    toJSON () {
+        // hide protected fields
+        let attributes = Object.assign({}, this.get())
+        for (let a of PROTECTED_ATTRIBUTES) {
+            delete attributes[a]
+        }
+        return attributes
+    }
+
+    user_id: number;
+    user_username: string;
+    user_password: string;
+    user_fullName: string;
+    user_pin: string;
+    user_enabled: number;
+    user_team: number;
+    user_teamRole: number;
+    user_isAdmin: number;
+    user_isActive: number;
 }
 
 export interface UserInterface {
@@ -23,6 +34,7 @@ export interface UserInterface {
     user_team: number;
     user_teamRole: number;
     user_isAdmin: number;
+    user_isActive: number;
 }
 
 User.init(
@@ -35,19 +47,20 @@ User.init(
         user_username: {
             type: new DataTypes.STRING(40),
             unique: true,
-            allowNull: false
+            allowNull: false,
         },
         user_password: {
-            type: new DataTypes.STRING(40),
-            allowNull: false
+            type: new DataTypes.STRING(100),
+            allowNull: false,
         },
         user_fullName: {
             type: new DataTypes.STRING(40),
             allowNull: false
         },
         user_pin: {
-            type: new DataTypes.INTEGER,
-            allowNull: true
+            type: new DataTypes.STRING(80),
+            allowNull: true,
+            unique: true,
         },
         user_token: {
             type: new DataTypes.STRING(50),
@@ -65,17 +78,25 @@ User.init(
             type: new DataTypes.TINYINT(),
             allowNull: false
         },
-        user_enabled: {
+        user_isActive: {
             type: new DataTypes.TINYINT(),
             allowNull: false
         },
     },
     {
         timestamps: false,
-        tableName: "users",
+        tableName: 'users',
         sequelize: database,
         defaultScope: {
-            attributes: {exclude: ['user_password', 'user_pin', 'user_token', 'user_enabled']},
+            attributes: {exclude: ['user_isActive']},
         },
     }
 );
+
+
+
+
+
+
+
+

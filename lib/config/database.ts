@@ -6,4 +6,5 @@ export const database = new Sequelize({
     username: "medic",
     password: "C0mdeved",
     database: "medicline",
+    //logging: false
 });
