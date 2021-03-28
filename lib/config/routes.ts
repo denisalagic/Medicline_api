@@ -1,17 +1,33 @@
 import {UserController} from "../controllers/user.controller";
 import {CodebookController} from '../controllers/codebook.controller';
-import {CustomersController} from '../controllers/customers.controller';
-import {CustomerLocationController} from '../controllers/customer_locations.controller';
-import {NotesController} from '../controllers/notes.controller';
+import {CustomerController} from '../controllers/customer.controller';
+import {CustomerLocationController} from '../controllers/customer_location.controller';
+import {NoteController} from '../controllers/note.controller';
+import {VisitController} from '../controllers/visit.controller';
+import {RecommendationController} from '../controllers/recommendation.controller';
+import {ProductController} from '../controllers/product.controller';
+import {TaskController} from '../controllers/task.controller';
+import {OrderProductController} from '../controllers/order_product.controller';
 
 export class Routes {
-    public usersController: UserController = new UserController();
     public codebookController: CodebookController = new CodebookController();
-    public customersController: CustomersController = new CustomersController();
-    public customerLocationsController: CustomerLocationController = new CustomerLocationController();
-    public notesController: NotesController = new NotesController();
+    public customersController: CustomerController = new CustomerController();
+    public customerLocationController: CustomerLocationController = new CustomerLocationController();
+    public recommendationController: RecommendationController = new RecommendationController();
+    public productController: ProductController = new ProductController();
+    public orderProductController: OrderProductController = new OrderProductController();
+    public noteController: NoteController = new NoteController();
+    public taskController: TaskController = new TaskController();
+    public visitController: VisitController = new VisitController();
+    public usersController: UserController = new UserController();
 
     public routes(app): void {
+        // BEGIN COOKBOOK
+        app
+            .route("/codebook")
+            .get(this.codebookController.index)
+        // END COOKBOOK
+
         // BEGIN CUSTOMERS
         app
             .route("/customers")
@@ -22,26 +38,85 @@ export class Routes {
             .route("/customers/:id")
             .put(this.customersController.update)
         // END CUSTOMERS
+
         // BEGIN CUSTOMER LOCATIONS
         app
             .route("/customers/locations")
-            .get(this.customerLocationsController.index)
-            .post(this.customerLocationsController.create);
+            .get(this.customerLocationController.index)
+            .post(this.customerLocationController.create);
 
         app
             .route("/customers/locations/:id")
-            .put(this.customerLocationsController.update)
+            .put(this.customerLocationController.update)
         // END CUSTOMER LOCATIONS
+
+        // BEGIN RECOMMENDATION
+        app
+            .route("/recommendations/")
+            .get(this.recommendationController.index)
+            .post(this.recommendationController.create);
+
+        app
+            .route("/recommendations/:id")
+            .put(this.recommendationController.update);
+        // END RECOMMENDATION
+
+        // BEGIN PRODUCT
+        app
+            .route("/products/")
+            .get(this.productController.index)
+            .post(this.productController.create);
+
+        app
+            .route("/products/:id")
+            .put(this.productController.update);
+        // END PRODUCT
+
+        // BEGIN ORDER PRODUCT
+        app
+            .route("/orders/products")
+            .get(this.orderProductController.index)
+            .post(this.orderProductController.create)
+            .put(this.orderProductController.update)
+            .delete(this.orderProductController.delete);
+
+        app
+            .route("/products/:id")
+            .put(this.productController.update);
+        // END ORDER PRODUCT
+
         // BEGIN NOTES
         app
             .route("/notes/:id")
-            .get(this.notesController.index)
-            .put(this.notesController.update)
-            .delete(this.notesController.delete);
+            .get(this.noteController.index)
+            .put(this.noteController.update)
+            .delete(this.noteController.delete);
         app
             .route("/notes/")
-            .post(this.notesController.create);
+            .post(this.noteController.create);
         // END NOTES
+
+        // BEGIN TASKS
+        app
+            .route("/visits/")
+            .post(this.taskController.create);
+        app
+            .route("/tasks/:id")
+            .get(this.taskController.index)
+            .put(this.taskController.update);
+        // END TASKS
+
+        // BEGIN VISITS
+        app
+            .route("/visits/:id")
+            .get(this.visitController.index)
+            .put(this.visitController.update)
+            .delete(this.visitController.delete);
+        app
+            .route("/visits/")
+            .post(this.visitController.create);
+        // END VISITS
+
         // BEGIN USERS
         app
             .route("/users")
@@ -60,10 +135,5 @@ export class Routes {
             .route("/loginMobile")
             .post(this.usersController.loginMobile);
         // END USERS
-        // BEGIN COOKBOOK
-        app
-            .route("/codebook")
-            .get(this.codebookController.index)
-        // END COOKBOOK
     }
 }

@@ -9,7 +9,7 @@ export class UserController {
     public index(req: Request, res: Response) {
         User.findAll<User>({
             where: {
-                user_isActive: 1
+                user_isActive: 0
             }
         })
             .then((users: Array<User>) => res.json({success: true, data: users}))

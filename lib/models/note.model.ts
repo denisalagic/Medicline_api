@@ -1,20 +1,20 @@
 import {Model, DataTypes} from 'sequelize';
 import {database} from '../config/database';
 
-export class Notes extends Model {
+export class Note extends Model {
     note_id: number;
     note_user: number;
     note_topic: string;
     note_message: string;
 }
 
-export interface NotesInterface {
+export interface NoteInterface {
     note_user: number;
     note_topic: string;
     note_message: string;
 }
 
-Notes.init(
+Note.init(
     {
         note_id: {
             type: DataTypes.INTEGER,

@@ -1,8 +1,8 @@
 import {Request, Response} from 'express';
 import {Op, UpdateOptions} from 'sequelize';
-import {Customer, CustomerInterface} from '../models/customers.model';
+import {Customer, CustomerInterface} from '../models/customer.model';
 
-export class CustomersController {
+export class CustomerController {
     public index(req: Request, res: Response) {
         let condition = [];
         const type = req.query.customer_type;

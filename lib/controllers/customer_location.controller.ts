@@ -1,6 +1,6 @@
 import {Request, Response} from 'express';
 import {Op, UpdateOptions} from 'sequelize';
-import {CustomerLocation, CustomerLocationInterface} from '../models/customer_locations.model';
+import {CustomerLocation, CustomerLocationInterface} from '../models/customer_location.model';
 
 export class CustomerLocationController {
     public index(req: Request, res: Response) {
