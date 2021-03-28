@@ -1,12 +1,20 @@
 import {Request, Response} from 'express';
 import {UpdateOptions, DestroyOptions} from 'sequelize'
-import {Product, ProductInterface} from '../models/product.model';
 import {OrderProduct, OrderProductInterface} from '../models/order_product.model';
+import {Product} from '../models/product.model';
 
 export class OrderProductController {
 
     public index(req: Request, res: Response) {
-        OrderProduct.findAll<OrderProduct>({include: Product})
+        const orderId: number = Number(req.params.id);
+        OrderProduct.findAll<OrderProduct>({
+            where: {
+                orderProduct_order: orderId
+            },
+            include: {
+                model: Product,
+                attributes:['product_name', 'product_price' , 'product_vat']
+            }})
             .then((products: Array<any>) => res.json({success: true, data: products}))
             .catch((err: Error) => res.status(500).json(err))
     }
@@ -20,11 +28,11 @@ export class OrderProductController {
     }
 
     public async update(req: Request, res: Response) {
-        const productId: number = Number(req.params.id);
+        const orderProductId: number = Number(req.params.id);
         const params: OrderProductInterface = req.body
 
         const options: UpdateOptions = {
-            where: {product_id: productId},
+            where: {orderProduct_id: orderProductId},
             limit: 1
         }
 

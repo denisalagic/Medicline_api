@@ -74,15 +74,14 @@ export class Routes {
 
         // BEGIN ORDER PRODUCT
         app
-            .route("/orders/products")
+            .route("/orders/products/:id")
             .get(this.orderProductController.index)
-            .post(this.orderProductController.create)
             .put(this.orderProductController.update)
             .delete(this.orderProductController.delete);
 
         app
-            .route("/products/:id")
-            .put(this.productController.update);
+            .route("/orders/products/")
+            .post(this.orderProductController.create)
         // END ORDER PRODUCT
 
         // BEGIN NOTES
