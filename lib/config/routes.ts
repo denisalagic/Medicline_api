@@ -8,6 +8,7 @@ import {RecommendationController} from '../controllers/recommendation.controller
 import {ProductController} from '../controllers/product.controller';
 import {TaskController} from '../controllers/task.controller';
 import {OrderProductController} from '../controllers/order_product.controller';
+import {OrderController} from '../controllers/order.controller';
 
 export class Routes {
     public codebookController: CodebookController = new CodebookController();
@@ -15,6 +16,7 @@ export class Routes {
     public customerLocationController: CustomerLocationController = new CustomerLocationController();
     public recommendationController: RecommendationController = new RecommendationController();
     public productController: ProductController = new ProductController();
+    public orderController: OrderController = new OrderController();
     public orderProductController: OrderProductController = new OrderProductController();
     public noteController: NoteController = new NoteController();
     public taskController: TaskController = new TaskController();
@@ -72,6 +74,17 @@ export class Routes {
             .put(this.productController.update);
         // END PRODUCT
 
+        // BEGIN ORDER
+        app
+            .route("/orders/:userId/:userTeam/:userRole")
+            .get(this.orderController.index)
+
+        app
+            .route("/orders/")
+            .post(this.orderController.create)
+            .put(this.orderController.update);
+        // END ORDER
+
         // BEGIN ORDER PRODUCT
         app
             .route("/orders/products/:id")
@@ -119,12 +132,11 @@ export class Routes {
         // BEGIN USERS
         app
             .route("/users")
-            .get(this.usersController.index)
             .post(this.usersController.create);
 
         app
-            .route("/users/:id")
-            .get(this.usersController.show)
+            .route("/users/:id?")
+            .get(this.usersController.index)
             .put(this.usersController.update)
             .delete(this.usersController.delete);
         app

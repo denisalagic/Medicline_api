@@ -7,9 +7,16 @@ import {Op} from "sequelize";
 export class UserController {
 
     public index(req: Request, res: Response) {
+        let condition = [];
+        const team = req.params.id;
+        if (typeof team !== 'undefined') {
+            condition.push({user_team: team})
+        }
+        condition.push({ user_isActive: 0 });
+
         User.findAll<User>({
             where: {
-                user_isActive: 0
+                [Op.and]: condition,
             }
         })
             .then((users: Array<User>) => res.json({success: true, data: users}))
@@ -25,20 +32,6 @@ export class UserController {
 
         User.create<User>(params)
             .then((user: User) => res.status(201).json(user))
-            .catch((err: Error) => res.status(500).json(err))
-    }
-
-    public show(req: Request, res: Response) {
-        const userId: number = Number(req.params.id);
-
-        User.findByPk<User>(userId)
-            .then((user: User | null) => {
-                if (user) {
-                    res.json(user)
-                } else {
-                    res.status(404).json({success: false, message: "Korisnik nije ponađen."})
-                }
-            })
             .catch((err: Error) => res.status(500).json(err))
     }
 

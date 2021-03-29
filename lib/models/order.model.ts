@@ -30,7 +30,7 @@ export class Order extends Model {
     order_isActive: number;
 }
 
-export interface OrderProductInterface {
+export interface OrderInterface {
     order_user: number;
     order_date: Date;
     order_type: string;
