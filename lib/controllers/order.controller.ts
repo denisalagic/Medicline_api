@@ -29,7 +29,12 @@ export class OrderController {
         if (dateFrom && dateTo) {
 
         } else {
-
+            let date = moment().subtract(5, "days").format("YYYY-MM-DD");
+            let dateAndCondition = {[Op.and]: [{order_invoiced: {[Op.not]: null}}, {order_issued: {[Op.not]: null}},
+                    {order_delivered:{[Op.not]: null}}, {order_date: {[Op.gte]: date}}]};
+            let dateOrCondition = {[Op.or]: [{order_invoiced: {[Op.eq]: null}}, {order_issued:{[Op.eq]: null}},
+                    {order_delivered:{[Op.eq]: null}}, {order_partial: 1}, {order_documentation: 1}]};
+            orCondition.push({[Op.or]: [dateAndCondition, dateOrCondition]});
         }
         if (andCondition.length > 0) Object.assign(conditions, {[Op.and]: andCondition});
         if (orCondition.length > 0) Object.assign(conditions, {[Op.or]: orCondition});
