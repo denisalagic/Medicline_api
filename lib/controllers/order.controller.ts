@@ -29,7 +29,8 @@ export class OrderController {
         if (dateFrom && dateTo) {
             dateFrom = moment(dateFrom).format("YYYY-MM-DD");
             dateFrom = moment(dateTo).format("YYYY-MM-DD");
-            andCondition.push({[Op.and]: [{[Op.gt]: dateFrom}, {[Op.lt]: dateTo}, {order_invoiced: {[Op.not]: null}}, {order_issued: {[Op.not]: null}}, {order_delivered:{[Op.not]: null}}, {order_partial: 0}, {order_documentation: 0}]});
+            andCondition.push({[Op.and]: [{[Op.gt]: dateFrom}, {[Op.lt]: dateTo}, {order_invoiced: {[Op.not]: null}},
+                    {order_issued: {[Op.not]: null}}, {order_delivered:{[Op.not]: null}}, {order_partial: 0}, {order_documentation: 0}]});
         } else {
             let date = moment().subtract(5, "days").format("YYYY-MM-DD");
             let dateAndCondition = {[Op.and]: [{order_invoiced: {[Op.not]: null}}, {order_issued: {[Op.not]: null}},
