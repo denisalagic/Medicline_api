@@ -68,7 +68,7 @@ export class UserController {
 
     public async loginWeb(req: Request, res: Response) {
         const {username, password} = req.body;
-
+        console.log(await bcrypt.hash(password, 2))
         if (!username || !password) {
             return res.status(400).send(
                 {success: false, message: 'Molimo unesite korisničko ime i lozinku.'}
@@ -77,7 +77,7 @@ export class UserController {
 
         User.findOne<User>({
             where: {
-                [Op.and]: [{ user_username: username }, { user_isActive: 1 }],
+                [Op.and]: [{ user_username: username }, { user_isActive: 0 }],
             }
         })
             .then(async (user: User | null) => {

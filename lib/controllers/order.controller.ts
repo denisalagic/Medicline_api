@@ -26,7 +26,7 @@ export class OrderController {
                 .then((users: Array<User>) => users.forEach((e) => orCondition.push({'order_user': e.user_id})));
 
         }
-        if (dateFrom && dateTo) {
+        if (dateFrom!= 'undefined' && dateTo != 'undefined') {
             dateFrom = moment(dateFrom).format("YYYY-MM-DD");
             dateFrom = moment(dateTo).format("YYYY-MM-DD");
             andCondition.push({[Op.and]: [{[Op.gt]: dateFrom}, {[Op.lt]: dateTo}, {order_invoiced: {[Op.not]: null}},
@@ -36,7 +36,7 @@ export class OrderController {
             let dateAndCondition = {[Op.and]: [{order_invoiced: {[Op.not]: null}}, {order_issued: {[Op.not]: null}},
                     {order_delivered:{[Op.not]: null}}, {order_date: {[Op.gt]: date}}]};
             let dateOrCondition = {[Op.or]: [{order_invoiced: {[Op.eq]: null}}, {order_issued:{[Op.eq]: null}},
-                    {order_delivered: {[Op.eq]: null}}, {order_partial: {[Op.eq]: null}}, {order_documentation: {[Op.eq]: null}}]};
+                    {order_delivered: {[Op.eq]: null}}, {order_partial: 1}, {order_documentation: 1}]};
             orCondition.push({[Op.or]: [dateAndCondition, dateOrCondition]});
         }
         if (andCondition.length > 0) Object.assign(conditions, {[Op.and]: andCondition});
