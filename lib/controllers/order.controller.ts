@@ -10,8 +10,8 @@ export class OrderController {
         const userId: number = Number(req.params.userId);
         const userTeam: number = Number(req.params.userTeam); // 0 - Global; > 0 Team;
         const userRole: number = Number(req.params.userRole); // 0 - Admin; 1 - User
-        const dateFrom = Date.parse(req.params.dateFrom);
-        const dateTo = Date.parse(req.params.dateTo);
+        let dateFrom: string = String(req.params.dateFrom);
+        let dateTo: string = String(req.params.dateTo);
         let conditions = {};
         let andCondition = [];
         let orCondition = [];
@@ -27,13 +27,15 @@ export class OrderController {
 
         }
         if (dateFrom && dateTo) {
-
+            dateFrom = moment(dateFrom).format("YYYY-MM-DD");
+            dateFrom = moment(dateTo).format("YYYY-MM-DD");
+            andCondition.push({[Op.and]: [{[Op.gt]: dateFrom}, {[Op.lt]: dateTo}, {order_invoiced: {[Op.not]: null}}, {order_issued: {[Op.not]: null}}, {order_delivered:{[Op.not]: null}}, {order_partial: 0}, {order_documentation: 0}]});
         } else {
             let date = moment().subtract(5, "days").format("YYYY-MM-DD");
             let dateAndCondition = {[Op.and]: [{order_invoiced: {[Op.not]: null}}, {order_issued: {[Op.not]: null}},
-                    {order_delivered:{[Op.not]: null}}, {order_date: {[Op.gte]: date}}]};
+                    {order_delivered:{[Op.not]: null}}, {order_date: {[Op.gt]: date}}]};
             let dateOrCondition = {[Op.or]: [{order_invoiced: {[Op.eq]: null}}, {order_issued:{[Op.eq]: null}},
-                    {order_delivered:{[Op.eq]: null}}, {order_partial: 1}, {order_documentation: 1}]};
+                    {order_delivered: {[Op.eq]: null}}, {order_partial: {[Op.eq]: null}}, {order_documentation: {[Op.eq]: null}}]};
             orCondition.push({[Op.or]: [dateAndCondition, dateOrCondition]});
         }
         if (andCondition.length > 0) Object.assign(conditions, {[Op.and]: andCondition});
