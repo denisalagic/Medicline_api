@@ -90,6 +90,11 @@ User.init(
         defaultScope: {
             attributes: {exclude: ['user_isActive']},
         },
+        scopes: {
+            onlyUsers: {
+                attributes: { exclude: ['user_username', 'user_token', 'user_isAdmin' , 'user_isActive'] },
+            }
+        }
     }
 );
 
