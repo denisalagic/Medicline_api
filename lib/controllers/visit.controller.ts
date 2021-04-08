@@ -5,7 +5,7 @@ import {Visit, VisitInterface} from '../models/visit.model';
 export class VisitController {
 
     public index(req: Request, res: Response) {
-        const userId: number = Number(req.params.id);
+        const userId: number = Number(res.locals.jwtPayload.user_id);
         Visit.findAll<Visit>({
             where: {
                 visit_user: userId

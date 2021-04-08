@@ -38,5 +38,8 @@ Recommendation.init(
         timestamps: false,
         tableName: 'recommendations',
         sequelize: database,
+        defaultScope: {
+            attributes: {exclude: ['recommendations_isActive']},
+        },
     }
 );

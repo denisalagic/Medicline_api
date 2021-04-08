@@ -7,9 +7,9 @@ import {User} from '../models/user.model';
 export class OrderController {
 
     public async index(req: Request, res: Response) {
-        const userId: number = Number(req.params.userId);
-        const userTeam: number = Number(req.params.userTeam); // 0 - Global; > 0 Team;
-        const userRole: number = Number(req.params.userRole); // 0 - Admin; 1 - User
+        const userId = Number(res.locals.jwtPayload.user_id);
+        const userTeam = Number(res.locals.jwtPayload.user_team);
+        const userRole = Number(res.locals.jwtPayload.user_teamRole);
         let dateFrom: string = String(req.params.dateFrom);
         let dateTo: string = String(req.params.dateTo);
         let conditions = {};
@@ -50,6 +50,7 @@ export class OrderController {
 
     public async create(req: Request, res: Response) {
         const params: OrderInterface = req.body
+        params.order_user = Number(res.locals.jwtPayload.user_id);
 
         Order.create<Order>(params)
             .then((order: Order) => res.status(201).json(order))
@@ -58,7 +59,7 @@ export class OrderController {
 
     public async update(req: Request, res: Response) {
         const orderProductId: number = Number(req.params.id);
-        const params: OrderInterface = req.body
+        const params: OrderInterface = req.body;
 
         const options: UpdateOptions = {
             where: {orderProduct_id: orderProductId},

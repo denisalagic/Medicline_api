@@ -5,7 +5,7 @@ import {Note, NoteInterface} from '../models/note.model';
 export class NoteController {
 
     public index(req: Request, res: Response) {
-        const userId: number = Number(req.params.id);
+        const userId: number = Number(res.locals.jwtPayload.user_id);
         Note.findAll<Note>({
             where: {
                 note_user: userId
@@ -17,6 +17,7 @@ export class NoteController {
 
     public async create(req: Request, res: Response) {
         const params: NoteInterface = req.body
+        params.note_user = Number(res.locals.jwtPayload.user_id);
 
         Note.create<Note>(params)
             .then((note: Note) => res.status(201).json(note))

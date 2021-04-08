@@ -5,7 +5,7 @@ import {Task, TaskInterface} from '../models/task.model';
 export class TaskController {
 
     public index(req: Request, res: Response) {
-        const userId: number = Number(req.params.id);
+        const userId: number = Number(res.locals.jwtPayload.user_id);
         Task.findAll<Task>({
             where: {
                 [Op.or]: {task_createdBy: userId, task_assignedTo: userId}
@@ -17,6 +17,7 @@ export class TaskController {
 
     public async create(req: Request, res: Response) {
         const params: TaskInterface = req.body
+        params.task_createdBy = Number(res.locals.jwtPayload.user_id);
 
         Task.create<Task>(params)
             .then((task: Task) => res.status(201).json(task))

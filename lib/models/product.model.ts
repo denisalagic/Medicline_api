@@ -62,5 +62,8 @@ Product.init(
         timestamps: false,
         tableName: 'products',
         sequelize: database,
+        defaultScope: {
+            attributes: {exclude: ['product_isActive']},
+        },
     }
 );

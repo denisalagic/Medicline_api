@@ -16,6 +16,7 @@ export class RecommendationController {
 
     public async create(req: Request, res: Response) {
         const params: RecommendationInterface = req.body
+        console.log(params);
 
         Recommendation.create<Recommendation>(params)
             .then((recommendation: Recommendation) => res.status(201).json(recommendation))
