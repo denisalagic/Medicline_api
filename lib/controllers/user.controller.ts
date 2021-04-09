@@ -14,7 +14,7 @@ export class UserController {
         }
         condition.push({ user_isActive: 0 });
 
-        User.scope('onlyUsers').findAll<User>({
+        User.findAll<User>({
             where: {
                 [Op.and]: condition,
             }
